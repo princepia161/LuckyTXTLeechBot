@@ -890,7 +890,8 @@ async def account_login(bot: Client, m: Message):
                     'Host': 'api.classplusapp.com',
                     
                     # 👇👇👇 YAHAN APNA NAYA CLASSPLUS TOKEN DALEIN 👇👇👇
-                    'x-access-token': 'AAPKA_NAYA_TOKEN_YAHAN', 
+                    'x-access-token': '
+eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6MTY0MDQwNzkyLCJvcmdJZCI6ODEyNDEwLCJ0eXBlIjoxLCJtb2JpbGUiOiI5MTgyMTAxNjk5NTEiLCJuYW1lIjoiUHJpbmNlcGlhIiwiZW1haWwiOiJwcmluY2VwaWExNjFAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOnRydWUsIm9yZ0NvZGUiOiJra3Vja3kiLCJpc0RpeVN1YmFkbWluIjowLCJmaW5nZXJwcmludElkIjoiNTYyODI3NmQyNmJhMTAwMDE5OWRlNmUwZWVhMWE1MDEiLCJpYXQiOjE3NzY0NDMxODYsImV4cCI6MTc3NzA0Nzk4Nn0.tiVjbkZFn3O4PZwT-SWw2qpmFnmEHrOalMZoDua6XI7HubBAqJ6tZ-TvsBSIcx_1', 
                     
                     'X-CDN-Tag': 'empty', # <-- 500 Server Error Fix
                     'Referer': 'https://web.classplusapp.com/',
