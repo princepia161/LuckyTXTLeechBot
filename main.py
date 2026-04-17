@@ -879,11 +879,18 @@ async def account_login(bot: Client, m: Message):
                 "").replace("+", "").replace("#", "").replace("|", "").replace(
                     "@", "").replace("*", "").replace(".", "").strip()
 
-            if "jwplayer" in url:
+# CHANGE 1: Yahan "or classplusapp" add karna hai
+            if "jwplayer" in url or "classplusapp" in url:
                 headers = {
                     'Host': 'api.classplusapp.com',
+                    
+                    # CHANGE 2: Apna naya (fresh) token dono single quotes ' ' ke beech dalein
                     'x-access-token':
-                    'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6MTY0MDQwNzkyLCJvcmdJZCI6ODEyNDEwLCJ0eXBlIjoxLCJtb2JpbGUiOiI5MTgyMTAxNjk5NTEiLCJuYW1lIjoiUHJpbmNlcGlhIiwiZW1haWwiOiJwcmluY2VwaWExNjFAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOnRydWUsIm9yZ0NvZGUiOiJra3Vja3kiLCJpc0RpeVN1YmFkbWluIjowLCJmaW5nZXJwcmludElkIjoiNTYyODI3NmQyNmJhMTAwMDE5OWRlNmUwZWVhMWE1MDEiLCJpYXQiOjE3NzY0NDMxODYsImV4cCI6MTc3NzA0Nzk4Nn0.tiVjbkZFn3O4PZwT-SWw2qpmFnmEHrOalMZoDua6XI7HubBAqJ6tZ-TvsBSIcx_1',
+                    'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6MTY0MDQwNzkyLCJvcmdJZCI6ODEyNDEwLCJ0eXBlIjoxLCJtb2JpbGUiOiI5MTgyMTAxNjk5NTEiLCJuYW1lIjoiUHJpbmNlcGlhIiwiZW1haWwiOiJwcmluY2VwaWExNjFAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOnRydWUsIm9yZ0NvZGUiOiJra3Vja3kiLCJpc0RpeVN1YmFkbWluIjowLCJmaW5nZXJwcmludElkIjoiNTYyODI3NmQyNmJhMTAwMDE5OWRlNmUwZWVhMWE1MDEiLCJpYXQiOjE3NzY0NDMxODYsImV4cCI6MTc3NzA0Nzk4Nn0.tiVjbkZFn3O4PZwT-SWw2qpmFnmEHrOalMZoDua6XI7HubBAqJ6tZ-TvsBSIcx_1', # <-- Yahan apna naya lamba sa token paste karein
+                    
+                    # CHANGE 3 (Bonus): Ye referer add karne se 403 error nahi aayega
+                    'Referer': 'https://web.classplusapp.com/',
+                    
                     'user-agent': 'Mobile-Android',
                     'app-version': '1.4.37.1',
                     'api-version': '18',
