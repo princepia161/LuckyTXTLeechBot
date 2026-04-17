@@ -873,11 +873,23 @@ async def account_login(bot: Client, m: Message):
     try:
         for i in range(arg, len(links)):
 
+            for i in range(arg, len(links)):
+
             url = links[i][1]
+            
+            # --- SUPER URL CLEANER (Yeh hamesha URL saaf karega) ---
+            if "http" in url:
+                url = "http" + url.split("http", 1)[1]
+            url = url.strip()
+            # -------------------------------------------------------
+
             name1 = links[i][0].replace("\t", "").replace(":", "").replace(
                 "/",
                 "").replace("+", "").replace("#", "").replace("|", "").replace(
                     "@", "").replace("*", "").replace(".", "").strip()
+
+            if "jwplayer" in url or "classplusapp" in url:
+                headers = {
 
 # CHANGE 1: Yahan "or classplusapp" add karna hai
             if "jwplayer" in url or "classplusapp" in url:
