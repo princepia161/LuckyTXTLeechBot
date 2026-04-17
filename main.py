@@ -873,35 +873,26 @@ async def account_login(bot: Client, m: Message):
     try:
         for i in range(arg, len(links)):
 
-            for i in range(arg, len(links)):
-
+            # --- URL CLEANER (Koi kachra nahi aayega) ---
             url = links[i][1]
-            
-            # --- SUPER URL CLEANER (Yeh hamesha URL saaf karega) ---
             if "http" in url:
                 url = "http" + url.split("http", 1)[1]
             url = url.strip()
-            # -------------------------------------------------------
 
             name1 = links[i][0].replace("\t", "").replace(":", "").replace(
                 "/",
                 "").replace("+", "").replace("#", "").replace("|", "").replace(
                     "@", "").replace("*", "").replace(".", "").strip()
 
-            if "jwplayer" in url or "classplusapp" in url:
-                headers = {
-
-# CHANGE 1: Yahan "or classplusapp" add karna hai
+            # --- CLASSPLUS BYPASS START ---
             if "jwplayer" in url or "classplusapp" in url:
                 headers = {
                     'Host': 'api.classplusapp.com',
                     
-                    'x-access-token': 'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJpZCI6MTY0MDQwNzkyLCJvcmdJZCI6ODEyNDEwLCJ0eXBlIjoxLCJtb2JpbGUiOiI5MTgyMTAxNjk5NTEiLCJuYW1lIjoiUHJpbmNlcGlhIiwiZW1haWwiOiJwcmluY2VwaWExNjFAZ21haWwuY29tIiwiaXNJbnRlcm5hdGlvbmFsIjowLCJkZWZhdWx0TGFuZ3VhZ2UiOiJFTiIsImNvdW50cnlDb2RlIjoiSU4iLCJjb3VudHJ5SVNPIjoiOTEiLCJ0aW1lem9uZSI6IkdNVCs1OjMwIiwiaXNEaXkiOnRydWUsIm9yZ0NvZGUiOiJra3Vja3kiLCJpc0RpeVN1YmFkbWluIjowLCJmaW5nZXJwcmludElkIjoiNTYyODI3NmQyNmJhMTAwMDE5OWRlNmUwZWVhMWE1MDEiLCJpYXQiOjE3NzY0NDMxODYsImV4cCI6MTc3NzA0Nzk4Nn0.tiVjbkZFn3O4PZwT-SWw2qpmFnmEHrOalMZoDua6XI7HubBAqJ6tZ-TvsBSIcx_1',
+                    # 👇👇👇 YAHAN APNA NAYA CLASSPLUS TOKEN DALEIN 👇👇👇
+                    'x-access-token': 'AAPKA_NAYA_TOKEN_YAHAN', 
                     
-                    # --- YEH NAYI LINE ADD KAREIN (500 Error Fix) ---
-                    'X-CDN-Tag': 'empty',
-                    # ------------------------------------------------
-                    
+                    'X-CDN-Tag': 'empty', # <-- 500 Server Error Fix
                     'Referer': 'https://web.classplusapp.com/',
                     'user-agent': 'Mobile-Android',
                     'app-version': '1.4.37.1',
@@ -917,52 +908,56 @@ async def account_login(bot: Client, m: Message):
                     'https://api.classplusapp.com/cams/uploader/video/jw-signed-url',
                     headers=headers,
                     params=params)
-                # print(response.json())
-                a = response.json()['url']
-                # print(a)
+                
+                try:
+                    a = response.json()['url']
+                except KeyError:
+                    raise Exception(f"Classplus Token Expire Ho Gaya Hai! Naya token dalein. API Response: {response.text}")
 
                 headers1 = {
-                    'User-Agent':
-                    'ExoPlayerDemo/1.4.37.1 (Linux;Android 11) ExoPlayerLib/2.14.1',
+                    'User-Agent': 'ExoPlayerDemo/1.4.37.1 (Linux;Android 11) ExoPlayerLib/2.14.1',
                     'Accept-Encoding': 'gzip',
                     'Host': 'cdn.jwplayer.com',
                     'Connection': 'Keep-Alive',
                 }
 
                 response1 = requests.get(f'{a}', headers=headers1)
-
                 url1 = (response1.text).split("\n")[2]
 
-#                 url1 = b
             else:
                 url1 = url
 
+            # --- DOWNLOADING START ---
             name = f'{str(count).zfill(3)}) {name1}'
             Show = f"**Downloading:-**\n\n**Name :-** `{name}`\n\n**Url :-** `{url1}`"
             prog = await m.reply_text(Show)
             cc = f'**Title »** {name1}.mkv\n**Caption »** {raw_text0}\n**Index »** {str(count).zfill(3)}\n\n**Download BY** :- Group Admin'
+            
             if "pdf" in url:
                 cmd = f'yt-dlp -o "{name}.pdf" "{url1}"'
             else:
                 cmd = f'yt-dlp -o "{name}.mp4" --no-keep-video --remux-video mkv "{url1}"'
+            
             try:
                 download_cmd = f"{cmd} -R 25 --fragment-retries 25 --external-downloader aria2c --downloader-args 'aria2c: -x 16 -j 32'"
                 os.system(download_cmd)
 
+                # --- FILENAME CRASH FIX ---
                 if os.path.isfile(f"{name}.mkv"):
                     filename = f"{name}.mkv"
                 elif os.path.isfile(f"{name}.mp4"):
                     filename = f"{name}.mp4"
                 elif os.path.isfile(f"{name}.pdf"):
                     filename = f"{name}.pdf"
+                else:
+                    raise Exception("Video download fail ho gayi! (Link dead ya token expire)")
 
-
-#                 filename = f"{name}.mkv"
-                subprocess.run(
-                    f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"',
-                    shell=True)
+                if "pdf" not in url1:
+                    subprocess.run(f'ffmpeg -i "{filename}" -ss 00:01:00 -vframes 1 "{filename}.jpg"', shell=True)
+                
                 await prog.delete(True)
                 reply = await m.reply_text(f"Uploading - ```{name}```")
+                
                 try:
                     if thumb == "no":
                         thumbnail = f"{filename}.jpg"
@@ -971,7 +966,7 @@ async def account_login(bot: Client, m: Message):
                 except Exception as e:
                     await m.reply_text(str(e))
 
-                dur = int(helper.duration(filename))
+                dur = int(helper.duration(filename)) if "pdf" not in url1 else 0
 
                 start_time = time.time()
                 if "pdf" in url1:
@@ -987,15 +982,17 @@ async def account_login(bot: Client, m: Message):
                                         progress=progress_bar,
                                         progress_args=(reply, start_time))
                 count += 1
-                os.remove(filename)
-
-                os.remove(f"{filename}.jpg")
+                
+                if os.path.exists(filename):
+                    os.remove(filename)
+                if os.path.exists(f"{filename}.jpg"):
+                    os.remove(f"{filename}.jpg")
+                
                 await reply.delete(True)
                 time.sleep(1)
+            
             except Exception as e:
-                await m.reply_text(
-                    f"**downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`"
-                )
+                await m.reply_text(f"**downloading failed ❌**\n{str(e)}\n**Name** - {name}\n**Link** - `{url}` & `{url1}`")
                 continue
     except Exception as e:
         await m.reply_text(e)
